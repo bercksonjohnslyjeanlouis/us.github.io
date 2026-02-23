@@ -316,6 +316,12 @@
 </head>
 <body>
 
+<!-- Password protection overlay -->
+<div id="lockScreen" style="position:fixed; inset:0; background:#7b4f3a; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+  <div style="font-family:'Playfair Display',serif; font-size:3rem; color:#fde8ef; margin-bottom:20px;">🔒</div>
+  <p style="color:#f4a7b9; font-size:1.2rem; letter-spacing:.1em;">Page protégée...</p>
+</div>
+
 <!-- Floating chocolate chips -->
 <div class="choco-bg" id="chocoBg"></div>
 
@@ -508,6 +514,20 @@ Je souhaite tellement de choses avec toi…</div>
 <footer>✦ Fait avec amour, à 5h54 du matin ✦</footer>
 
 <script>
+  // ─── Password protection ───
+  function checkPassword() {
+    const pwd = prompt('🔐 Entre le mot de passe pour voir cette page spéciale :');
+    if (pwd === 'geek') {
+      document.getElementById('lockScreen').style.display = 'none';
+      return true;
+    } else {
+      alert('❌ Mot de passe incorrect ! Réessaie...');
+      checkPassword(); // redemande
+    }
+  }
+  // Demande le mot de passe au chargement
+  window.addEventListener('load', checkPassword);
+
   // ─── Floating chocolate chips ───
   const bg = document.getElementById('chocoBg');
   for (let i = 0; i < 30; i++) {
