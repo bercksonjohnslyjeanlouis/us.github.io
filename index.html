@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOI & TIFI ♥</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+  :root {
+    --pink: #f4a7b9;
+    --pink-dark: #e07a95;
+    --pink-light: #fde8ef;
+    --brown: #7b4f3a;
+    --brown-light: #c49a7a;
+    --white: #fff9f9;
+    --choco: #3d1f0d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--white);
+    font-family: 'Lato', sans-serif;
+    color: var(--brown);
+    overflow-x: hidden;
+  }
+
+  /* ── Floating chocolates background ── */
+  .choco-bg {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .choc {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--choco);
+    border-radius: 2px;
+    opacity: 0.12;
+    animation: floatChoc linear infinite;
+  }
+  @keyframes floatChoc {
+    0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0.05; }
+    50%  { opacity: 0.18; }
+    100% { transform: translateY(-10vh)  rotate(360deg); opacity: 0; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #fde8ef 0%, #fce4d6 50%, #f9d5e5 100%);
+    text-align: center;
+    padding: 60px 20px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.5) 0%, transparent 60%);
+  }
+
+  /* ice cream decoration */
+  .ice-scene {
+    display: flex; gap: 24px; align-items: flex-end;
+    margin-bottom: 32px;
+    animation: bobble 3s ease-in-out infinite;
+  }
+  @keyframes bobble { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+  .cone { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .scoop {
+    width: 60px; height: 60px; border-radius: 50%;
+    box-shadow: inset -4px -4px 8px rgba(0,0,0,0.1);
+  }
+  .scoop-top { background: #f9b8cb; margin-bottom: -18px; z-index: 3; }
+  .scoop-mid { background: #fff5f5; margin-bottom: -18px; z-index: 2; width:54px; height:54px; }
+  .scoop-bot { background: #f9c9d0; z-index: 1; width:48px; height:48px; }
+  .cone-body {
+    width: 0; height: 0;
+    border-left: 24px solid transparent;
+    border-right: 24px solid transparent;
+    border-top: 48px solid var(--brown-light);
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+  }
+  .drip {
+    position: absolute; top: 52px; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 22px;
+    background: #fff5f5; border-radius: 0 0 8px 8px;
+    z-index: 4;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    color: var(--brown);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    animation: fadeUp 1s ease both;
+  }
+  .hero-title span { color: var(--pink-dark); font-style: italic; }
+  .hero-sub {
+    font-size: 1rem;
+    letter-spacing: .2em;
+    color: var(--brown-light);
+    text-transform: uppercase;
+    animation: fadeUp 1.3s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  .scroll-hint {
+    position: absolute; bottom: 28px;
+    font-size: .8rem; color: var(--brown-light);
+    letter-spacing: .15em;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  /* ── DIVIDER ── */
+  .divider {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 0;
+    overflow: hidden;
+  }
+  .divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, var(--pink), transparent);
+  }
+  .divider-icon {
+    margin: 0 16px;
+    font-size: 1.4rem;
+    color: var(--pink-dark);
+    animation: spin 6s linear infinite;
+  }
+  @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+  /* ── SECTION ── */
+  .section {
+    position: relative; z-index: 1;
+    max-width: 780px; margin: 0 auto;
+    padding: 60px 28px;
+  }
+
+  .card {
+    background: rgba(255,255,255,.85);
+    border: 1px solid rgba(244,167,185,.35);
+    border-radius: 24px;
+    padding: 40px 44px;
+    box-shadow: 0 8px 40px rgba(224,122,149,.12);
+    backdrop-filter: blur(6px);
+    transition: transform .3s;
+  }
+  .card:hover { transform: translateY(-4px); }
+
+  .time-stamp {
+    font-size: .75rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--pink-dark);
+    margin-bottom: 20px;
+  }
+
+  .letter-body {
+    font-size: 1.07rem;
+    line-height: 2;
+    color: var(--brown);
+    white-space: pre-line;
+  }
+
+  .letter-body em { color: var(--pink-dark); font-style: italic; }
+  .letter-body strong { color: var(--brown); font-weight: 700; }
+
+  /* ── LIST of reasons ── */
+  .reasons {
+    margin: 24px 0;
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .reasons li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 1rem; line-height: 1.6;
+    opacity: 0;
+    animation: slideIn .5s ease forwards;
+  }
+  .reasons li::before {
+    content: '✦';
+    color: var(--pink-dark);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  @keyframes slideIn { to{opacity:1;transform:none} from{opacity:0;transform:translateX(-16px)} }
+
+  /* stagger */
+  .reasons li:nth-child(1)  { animation-delay: .1s }
+  .reasons li:nth-child(2)  { animation-delay: .2s }
+  .reasons li:nth-child(3)  { animation-delay: .3s }
+  .reasons li:nth-child(4)  { animation-delay: .4s }
+  .reasons li:nth-child(5)  { animation-delay: .5s }
+  .reasons li:nth-child(6)  { animation-delay: .6s }
+  .reasons li:nth-child(7)  { animation-delay: .7s }
+  .reasons li:nth-child(8)  { animation-delay: .8s }
+  .reasons li:nth-child(9)  { animation-delay: .9s }
+  .reasons li:nth-child(10) { animation-delay:1.0s }
+  .reasons li:nth-child(11) { animation-delay:1.1s }
+  .reasons li:nth-child(12) { animation-delay:1.2s }
+  .reasons li:nth-child(13) { animation-delay:1.3s }
+
+  /* ── Ice cream photo section ── */
+  .photo-section {
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, #fde8ef, #fce4d6);
+    padding: 60px 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .photo-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--brown);
+    margin-bottom: 36px;
+  }
+  .photo-grid {
+    display: flex; flex-wrap: wrap;
+    gap: 20px; justify-content: center;
+    max-width: 860px; margin: 0 auto;
+  }
+  .photo-frame {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(224,122,149,.25);
+    border: 3px solid white;
+    transition: transform .3s, box-shadow .3s;
+    flex: 1 1 260px; max-width: 380px;
+  }
+  .photo-frame:hover {
+    transform: scale(1.03) rotate(1deg);
+    box-shadow: 0 16px 48px rgba(224,122,149,.35);
+  }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* CSS ice-cream art (fallback / decoration) */
+  .css-icecream {
+    display: inline-block;
+    margin: 20px;
+    animation: wobble 4s ease-in-out infinite;
+  }
+  @keyframes wobble { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+
+  /* ── CLOSING ── */
+  .closing {
+    position: relative; z-index: 1;
+    min-height: 60vh;
+    background: linear-gradient(170deg, #f9d5e5 0%, #fde8ef 50%, var(--white) 100%);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    overflow: hidden;
+  }
+  .closing-inner { max-width: 620px; }
+  .big-love {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    color: var(--pink-dark);
+    line-height: 1;
+    margin-bottom: 20px;
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,100%{transform:scale(1)}
+    14%{transform:scale(1.15)}
+    28%{transform:scale(1)}
+    42%{transform:scale(1.1)}
+    70%{transform:scale(1)}
+  }
+  .from-to {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--brown);
+    letter-spacing: .08em;
+  }
+  .from-to span { color: var(--pink-dark); }
+
+  /* hearts rain */
+  .heart-rain { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .heart-rain span {
+    position: absolute; top: -30px;
+    font-size: 1.2rem;
+    animation: rainDrop linear infinite;
+    opacity: 0;
+  }
+  @keyframes rainDrop {
+    0%  { opacity: 0; transform: translateY(0)   rotate(-10deg); }
+    10% { opacity: .7; }
+    90% { opacity: .5; }
+    100%{ opacity: 0; transform: translateY(100vh) rotate(10deg); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--brown);
+    color: var(--pink-light);
+    text-align: center;
+    padding: 20px;
+    font-size: .8rem;
+    letter-spacing: .12em;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating chocolate chips -->
+<div class="choco-bg" id="chocoBg"></div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="ice-scene">
+    <div class="cone">
+      <div class="scoop scoop-top"></div>
+      <div class="scoop scoop-mid"></div>
+      <div class="drip"></div>
+      <div class="cone-body"></div>
+    </div>
+    <div class="cone" style="transform:scale(1.15)">
+      <div class="scoop scoop-top" style="background:#f8c8d8"></div>
+      <div class="scoop scoop-mid"></div>
+      <div class="scoop scoop-bot"></div>
+      <div class="drip" style="background:#f8c8d8"></div>
+      <div class="cone-body"></div>
+    </div>
+    <div class="cone">
+      <div class="scoop scoop-top" style="background:#f9e4ec"></div>
+      <div class="scoop scoop-mid"></div>
+      <div class="drip" style="background:#f9e4ec"></div>
+      <div class="cone-body"></div>
+    </div>
+  </div>
+
+  <h1 class="hero-title">MOI &amp; <span>TIFI</span></h1>
+  <p class="hero-sub">Une lettre du cœur ♥</p>
+  <p class="scroll-hint">↓ défiler ↓</p>
+</section>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">✿</span><div class="divider-line"></div></div>
+
+<!-- ═══════ SECTION 1 — intro / heure ═══════ -->
+<section class="section">
+  <div class="card">
+    <p class="time-stamp">🕐 5h 54 du matin…</p>
+    <div class="letter-body">Une migraine dont je ne connais pas l'origine…
+Et des questions dans la tête sans réponses…
+
+Je me suis rendu dans le dictionnaire et j'ai cherché <em>décubitus</em>… J'avais déjà croisé et entendu le mot, mais ce n'était pas resté dans ma tête… Merci pour le rappel. Si tu vois ce que je veux dire…
+
+Là je suis en <em>décubitus latéral gauche</em> (exprès), la main gauche sous mon torse et la main droite est en train d'écrire… <strong>T'écrire TOI.</strong>
+
+Les "…" infinis, c'est fait exprès aussi. Bref ! Je commence…</div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">❋</span><div class="divider-line"></div></div>
+
+<!-- ═══════ SECTION 2 — pourquoi 24h ═══════ -->
+<section class="section">
+  <div class="card">
+    <p class="time-stamp">💌 Pourquoi 24h de silence ?</p>
+    <div class="letter-body">Pourquoi avoir pris 24h avant de répondre ton email ?
+
+Parce que j'ai décidé de répondre avec du retard. Pourquoi je fais ça ? Rien en particulier…
+
+Je me suis juste dit que je veux te rendre un peu <em>impatiente</em> à l'idée de me lire… Moi qui jusque-là avais l'habitude de répondre à la seconde. Il faut innover quand-même, me suis-je dit… Si je n'innove pas dans le bon sens, comment je vais pouvoir être à la hauteur de <strong>TIFI</strong> !? 😊
+
+Mais ! Il n'y a pas seulement ça… Pleins d'autres raisons ont expliqué le fait d'avoir pris tout ce temps :</div>
+
+    <ul class="reasons">
+      <li>La dédicace que je n'avais pas vu venir et que j'ai tellement appréciée</li>
+      <li>L'appellation <em>"mon p'tit GEEK adoré"</em> — tellement affectueusement cool</li>
+      <li>Tu m'as appelé <strong>Jean-Louis</strong> 🥹</li>
+      <li>La façon dont tu me montres que t'as aimé notre soirée</li>
+      <li>Tes <em>"Ou pa serye nèg… !"</em></li>
+      <li>Tes <em>"Gade yon timoun mesye… !"</em></li>
+      <li>Toi qui m'appelles <strong>TIGASON</strong> comme je t'appelle <strong>TIFI</strong></li>
+      <li>Ta nouvelle photo de profil sur WhatsApp</li>
+      <li>Le Nutella que tu as laissé pour fils de quelqu'un 🍫</li>
+      <li>Mon t-shirt que tu veux porter dans ton travail</li>
+      <li>La façon dont tu me décris comme un mélange blabla…</li>
+      <li>Toi qui as pris une bonne partie de dimanche à m'aider à trouver quoi porter</li>
+      <li>C'est aussi le <em>premier email</em> que j'écris depuis que j'ai officiellement dit à fille de quelqu'un que je veux être avec elle 💗</li>
+    </ul>
+
+    <div class="letter-body">J'avais trop de choses à <em>célébrer</em> et profiter. J'ai pris du temps à le faire… J'ai pris également du temps à penser à toi… À penser à <strong>TOI &amp; MOI</strong>.</div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">♡</span><div class="divider-line"></div></div>
+
+<!-- ═══════ PHOTOS crème glacée ═══════ -->
+<div class="photo-section">
+  <h2>Notre soirée… cette douceur 🍦</h2>
+  <div class="photo-grid">
+    <div class="photo-frame">
+      <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
+           data-src="icecream1"
+           alt="Crème glacée – notre soirée"
+           id="img1"
+           style="min-height:280px; background: linear-gradient(135deg,#fde8ef,#f4a7b9,#fff); display:block;">
+    </div>
+    <div class="photo-frame">
+      <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
+           data-src="icecream2"
+           alt="Crème glacée rose et blanche"
+           id="img2"
+           style="min-height:280px; background: linear-gradient(135deg,#fff,#fce4d6,#f9b8cb); display:block;">
+    </div>
+  </div>
+  <!-- CSS ice-cream art  -->
+  <div style="margin-top:40px; display:flex; justify-content:center; gap:32px; flex-wrap:wrap;">
+    <div class="css-icecream">
+      <svg width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="38" rx="30" ry="28" fill="#f9b8cb"/>
+        <ellipse cx="40" cy="52" rx="30" ry="28" fill="#fff5f5"/>
+        <path d="M12 65 L40 115 L68 65 Z" fill="#c49a7a"/>
+        <circle cx="28" cy="36" r="4" fill="#3d1f0d" opacity=".5"/>
+        <circle cx="50" cy="42" r="3" fill="#3d1f0d" opacity=".5"/>
+        <circle cx="36" cy="28" r="3" fill="#3d1f0d" opacity=".5"/>
+        <path d="M40 66 Q45 72 40 80 Q35 72 40 66Z" fill="#fff5f5"/>
+      </svg>
+    </div>
+    <div class="css-icecream" style="animation-delay:.8s">
+      <svg width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="30" rx="28" ry="26" fill="#f4a7b9"/>
+        <ellipse cx="40" cy="48" rx="28" ry="26" fill="#fde8ef"/>
+        <ellipse cx="40" cy="62" rx="26" ry="22" fill="#f9c9d0"/>
+        <path d="M14 72 L40 115 L66 72 Z" fill="#b07850"/>
+        <circle cx="32" cy="26" r="3" fill="#3d1f0d" opacity=".4"/>
+        <circle cx="48" cy="32" r="4" fill="#3d1f0d" opacity=".4"/>
+        <circle cx="38" cy="44" r="3" fill="#3d1f0d" opacity=".4"/>
+        <path d="M40 72 Q46 80 40 90 Q34 80 40 72Z" fill="#f4a7b9"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">✦</span><div class="divider-line"></div></div>
+
+<!-- ═══════ SECTION 3 — soirée ═══════ -->
+<section class="section">
+  <div class="card">
+    <p class="time-stamp">🌙 Notre soirée</p>
+    <div class="letter-body"><strong>Merci chérie. MA chérie.</strong>
+
+J'ai beaucoup aimé notre soirée. J'ai aimé la façon dont tu m'as rendu à l'aise et accro à quelque chose que je n'aime pas forcément. Je parle des selfies… Je parle d'essayer de trouver le bon angle devant la caméra… Je parle de me mettre devant un miroir à chercher un sourire qui va avec ton sourire à tou… OMG ! 🥵🤩
+
+J'aime la façon dont nous discutons… J'aime comment tu prends ton temps à me connaître, à aussi m'accepter avec mes bons et mauvais côtés…
+
+Tout ça me rend <em>dingue de toi</em> madame Jules.</div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">🌸</span><div class="divider-line"></div></div>
+
+<!-- ═══════ SECTION 4 — tu étais belle ═══════ -->
+<section class="section">
+  <div class="card">
+    <p class="time-stamp">✨ Tu étais belle</p>
+    <div class="letter-body">Merci de faire partie de ma vie. J'espère que tu feras encore plus partie de ma vie chérie… <em>en tant que copine.</em> 💗 Ce que je veux vraiment !
+
+<strong>Tu étais belle à cette soirée. Tu es toujours belle. Ça m'a plu.</strong>
+
+Je t'ai vue arriver en venant me chercher avec la carte à la soirée… <em>Yowww</em> 🤩
+
+C'était électrisant. Ça m'a rendu passionné… Attaché et tout le reste.
+
+Bref ! Je ne peux pas tout dire dans un seul courriel.
+
+À très vite bb.
+J'ai tellement de choses à te dire…
+Je souhaite tellement de choses avec toi…</div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">❤</span><div class="divider-line"></div></div>
+
+<!-- ═══════ CLOSING ═══════ -->
+<section class="closing">
+  <div class="heart-rain" id="heartRain"></div>
+  <div class="closing-inner">
+    <div class="big-love">♥</div>
+    <p class="from-to" style="font-size:1.8rem; margin-bottom:16px;">Je t'aime.</p>
+    <p class="from-to">De <span>MOI</span> à <span>TOI</span></p>
+    <p style="margin-top:24px; font-size:.9rem; color:var(--brown-light); letter-spacing:.15em;">MOI &amp; TIFI — pour toujours 🍦</p>
+  </div>
+</section>
+
+<footer>✦ Fait avec amour, à 5h54 du matin ✦</footer>
+
+<script>
+  // ─── Floating chocolate chips ───
+  const bg = document.getElementById('chocoBg');
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement('div');
+    c.className = 'choc';
+    const sz = 6 + Math.random() * 10;
+    c.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${sz}px; height:${sz*.7}px;
+      border-radius:${Math.random()>0.5?'50%':'3px'};
+      animation-duration:${8+Math.random()*14}s;
+      animation-delay:${Math.random()*12}s;
+    `;
+    bg.appendChild(c);
+  }
+
+  // ─── Heart rain in closing ───
+  const rain = document.getElementById('heartRain');
+  const emojis = ['♥','♡','💗','💕','🍦','✦'];
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('span');
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      font-size:${0.8+Math.random()*1.4}rem;
+      animation-duration:${5+Math.random()*8}s;
+      animation-delay:${Math.random()*6}s;
+      color: hsl(${330+Math.random()*30}, 70%, ${55+Math.random()*20}%);
+    `;
+    rain.appendChild(s);
+  }
+
+  // ─── Scroll reveal ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.style.opacity = 1;
+    });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.opacity = 0;
+    c.style.transition = 'opacity .8s ease, transform .3s';
+    observer.observe(c);
+  });
+</script>
+</body>
+</html>
